@@ -19,5 +19,16 @@ module.exports = function () {
     // 2) Deliver static packages
     app.use(express.static('server/public'));
 
+    app.get('/users/:id', function (req, res) {
+        var User = require('mongoose').model('User');
+
+        User.find({ id: req.params.id }, function (err, users) {
+            if (users.length > 0) {
+                res.status(200).send(`Hello ${users[0].name}`);}
+            else
+                res.status(200).send(`Id ${req.params.id} not found`);
+        });
+    });
+
     return app;
 };

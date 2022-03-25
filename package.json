@@ -4,6 +4,7 @@
   "scripts": {
     "server": "node ./server/server.js",
     "vueserve": "vue-cli-service serve",
+    "db": "",
     "start": "concurrently \"npm run vueserve\" \"npm run server\"",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -17,7 +18,8 @@
     "express": "^4.17.2",
     "vue": "^3.0.0",
     "passport": "^0.3.2",
-    "express-session": "^1.17.2"
+    "express-session": "^1.17.2",
+    "mongoose": "^6.2.8"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
