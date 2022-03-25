@@ -1,4 +1,4 @@
 module.exports = {
-    url: '',
-    name: '' // name of database
+    url: 'localhost',
+    name: 'money-man' // name of database
 }
