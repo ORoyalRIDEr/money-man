@@ -1,26 +1,20 @@
 var User = require('mongoose').model('User');
+var exceptions = require('../../config/exceptions');
 
 module.exports.create = function (req, res, next) {
-    // check if name is submitted
-    if (!req.body.name) {
-        res.send("NoUsernameSubmitted");
-        next();
-    }
+    if (!req.body.name) throw new exceptions.InputException('UsernameMissing');
 
-    // check if name already exists
-    User.find({ name: req.body.name }, function(err, users) {
-        if (err) throw err;
+    User.find({ name: req.body.name }, function (err, users) {
+        try {
+            if (err) throw err;
+            if (users.length > 0) throw new exceptions.InputException('UsernameAlreadyExists');
 
-        if (users.length > 0) {
-            res.send("UsernameAlreadyExists");
-            next();
-        }
-        else {
             User.insertMany({
                 name: req.body.name,
                 budget: 500
             })
-            res.send("UserCreated");
-        }
+
+            res.send();
+        } catch (e) { next(e); }
     })
 }

@@ -6,6 +6,8 @@ var express = require('express');
 var passport = require('passport');
 var session = require('express-session');
 
+var exceptions = require('../config/exceptions');
+
 module.exports = function () {
     var logger = function (req, res, next) {
         console.log('logger: ', req.method, req.url);
@@ -24,6 +26,20 @@ module.exports = function () {
     // REST Api calls
     var userMiddleware = require('../app/routes/user.server.routes');
     userMiddleware(app);
+    var articlesMiddleware = require('../app/routes/article.server.routes');
+    articlesMiddleware(app);
+
+    // Error handling
+    app.use(function (err, req, res, next) {
+        if (err instanceof exceptions.InputException)
+            res.status(400).send(`${err.name}: ${err.message}`);
+        else {
+            res.status(500).send();
+            console.log(err.stack);
+        }
+
+        next();
+    });
 
     return app;
 };
