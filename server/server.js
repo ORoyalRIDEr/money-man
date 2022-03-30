@@ -5,7 +5,7 @@ var db = mongoose();
 var app = express();
 
 if (db) {
-    app.listen(8000, 'localhost');
+    app.listen(8000);
     console.log('Server started');
 }
 else {
