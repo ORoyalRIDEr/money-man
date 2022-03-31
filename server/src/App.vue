@@ -5,7 +5,8 @@
         <div class="col-1 p-0 mx-3 my-auto" @click="showMenu = !showMenu">
           <img
             class="align-self-center d-md-none btn-settings"
-            src="http://192.168.178.21:8000/assets/icons/distribute-vertical.svg"
+            :src="`${ipprot}//${ipaddr}:${expressPort}/assets/icons/distribute-vertical.svg`"
+            onload="javascript:event.target.port=8000"
             alt="#"
           />
         </div>
@@ -37,6 +38,7 @@
         @login="loginUser"
         :userId="userId"
         :currentTab="loggedInTab"
+        :expressPort="expressPort"
       >
       </component>
     </section>
@@ -59,6 +61,7 @@ export default {
   },
   data: function () {
     return {
+      expressPort: 8000,
       currentTab: "loggedIn",
       userId: 11,
       userName: "Peter",
@@ -77,16 +80,21 @@ export default {
       console.log(tabName);
     },
   },
+  computed: {
+    ipaddr: () => window.location.hostname,
+    ipprot: () => window.location.protocol
+  }
 };
 </script>
 
 <style>
-html, body {
+html,
+body {
   min-height: 100vh;
   width: 100%;
   margin: 0;
   padding: 0;
-  overflow-x:hidden;
+  overflow-x: hidden;
 }
 
 html {

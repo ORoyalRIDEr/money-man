@@ -1,6 +1,7 @@
 var path = require('path');
 var bodyParser = require('body-parser');
 var url = require('url');
+var cors = require('cors');
 
 var express = require('express');
 var passport = require('passport');
@@ -15,6 +16,9 @@ module.exports = function () {
     }
 
     var app = express();
+
+    app.use(cors()) // cross plattform origin
+
     // 1) Log requests
     app.use(logger);
 

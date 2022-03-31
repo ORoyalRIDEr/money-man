@@ -40,11 +40,8 @@ export default {
         price: '',
         newCat: ''
     }},
-    computed: {
-        categories: function() {
-            return ['Essen', 'Kleidung', 'Geschenke', 'BuJ', 'Becky', 'Jakob', 'Haus', 'Pflege', 'Fly', 'Anschaffungen', 'Thrombo'];
-        }
-    }
+
+    props: ['categories']
 };
 </script>
 

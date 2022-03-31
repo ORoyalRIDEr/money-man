@@ -72,6 +72,39 @@ module.exports.get = function (req, res, next) {
     });
 };
 
+
+module.exports.firstEntry = function (req, res, next) {
+    User.findOne({ id: +req.params.userid }, function (err, user) {
+        try {
+            if (err) throw err;
+            if (!user) throw new exceptions.InputException('UserIdDoesNotExists');
+
+            Article.find({ userid: user._id }).sort({ time: 1 }).limit(1).then((articles) => {
+                res.send(articles[0].time);
+            })
+        } catch (e) { next(e); }
+    });
+};
+
+module.exports.getCategories = function (req, res, next) {
+    User.findOne({ id: +req.params.userid }, function (err, user) {
+        try {
+            if (err) throw err;
+            if (!user) throw new exceptions.InputException('UserIdDoesNotExists');
+
+            Article.find({ userid: user._id }).then((articles) => {
+                let categories = articles.reduce((cats, art) => {
+                    if (!cats.includes(art.category))
+                        cats.push(art.category);
+                    return cats;
+                }, []);
+
+                res.send(categories);
+            }, { multi: true })
+        } catch (e) { next(e); }
+    });
+};
+
 module.exports.convertArticle = function (req, res, next) {
     Article.find({}, function (err, articles) {
         articles.forEach(function (art) {
