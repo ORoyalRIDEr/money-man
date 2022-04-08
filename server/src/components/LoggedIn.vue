@@ -6,6 +6,7 @@
     :categories="categories"
     :selectedMonth="selectedMonth"
     @monthChanged="(month) => (selectedMonth = month)"
+    @newArticleAdded="getCategories"
   ></component>
 </template>
 
@@ -56,6 +57,12 @@ export default {
     this.selectedMonth = this.currentMonth;
     this.exprReqPre = `${window.location.protocol}//${window.location.hostname}:${this.expressPort}/`;
     this.getCategories();
+  },
+
+  watch: {
+    currentTab: function () {
+      this.getCategories();
+    },
   },
 };
 </script>
