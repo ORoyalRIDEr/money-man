@@ -23,7 +23,28 @@ module.exports.add = function (req, res, next) {
             res.send();
         } catch (e) { next(e); }
     });
+}
+
+module.exports.delete = function (req, res, next) {
+    User.findOne({ id: +req.params.userid }, function (err, user) {
+        try {
+            if (err) throw err;
+            if (!user) throw new exceptions.InputException('UserIdDoesNotExists');
+
+            // Makes sure, that the article fits to the current user
+            Article.findOneAndDelete({ $and: [{ user: user._id }, { _id: req.params.articleId }] }, function (err, article) {
+                try {
+                    if (err) throw err;
+                    if (!article) throw new exceptions.InputException('ArticleDoesNotExistsForCurrentUser');
+                    res.send();
+                } catch (e) { next(e); }
+            })
+
+        } catch (e) { next(e); }
+    });
 };
+
+
 
 module.exports.get = function (req, res, next) {
     User.find({ id: +req.params.userid }, function (err, users) {

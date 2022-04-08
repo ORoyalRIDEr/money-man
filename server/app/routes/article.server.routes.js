@@ -5,5 +5,6 @@ module.exports = function(app) {
     app.get('/:userid/getCategories', article.getCategories);
     app.get('/:userid/:year/:month?/:day?', article.get);
     app.post('/:userid', article.add);
+    app.delete('/:userid/:articleId', article.delete);
     app.get('/convertArticle', article.convertArticle);
 }

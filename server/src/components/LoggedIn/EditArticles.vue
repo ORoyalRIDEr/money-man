@@ -7,9 +7,18 @@
     @monthChanged="(month) => $emit('monthChanged', month)"
   ></MonthSelector>
 
+  <div v-if="msg" class="alert" :class="err ? 'alert-danger' : 'alert-success'">
+    {{ msg }}
+  </div>
+
   <!-- small display version -->
   <div class="d-xl-none">
-    <ArticlesList :articles="articles" :exprReqPre="exprReqPre"></ArticlesList>
+    <ArticlesList
+      :articles="articles"
+      :exprReqPre="exprReqPre"
+      :userId="userId"
+      @message="processArticleMsg"
+    ></ArticlesList>
   </div>
 
   <!-- large display version -->
@@ -18,12 +27,16 @@
       <ArticlesList
         :articles="articles.slice(0, Math.ceil(articles.length / 2))"
         :exprReqPre="exprReqPre"
+        :userId="userId"
+        @message="processArticleMsg"
       ></ArticlesList>
     </div>
     <div class="col-5 offset-1">
       <ArticlesList
         :articles="articles.slice(Math.ceil(articles.length / 2))"
         :exprReqPre="exprReqPre"
+        :userId="userId"
+        @message="processArticleMsg"
       ></ArticlesList>
     </div>
   </div>
@@ -43,6 +56,8 @@ export default {
   data() {
     return {
       articles: [],
+      msg: "",
+      err: false,
     };
   },
 
@@ -58,6 +73,11 @@ export default {
           this.articles = ret.data;
         });
     },
+    processArticleMsg: function(msg, error) {
+      this.msg = msg;
+      this.err = error;
+      this.updateArticles();
+    }
   },
 
   watch: {
