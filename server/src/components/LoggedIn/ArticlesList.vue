@@ -15,7 +15,7 @@
       <span class="col-1 text-start px-0">
         <img
           class=""
-          :src="`${exprReqPre}/assets/icons/trash.svg`"
+          :src="`${exprReqPre}assets/icons/trash.svg`"
           alt="#"
       /></span>
     </div>

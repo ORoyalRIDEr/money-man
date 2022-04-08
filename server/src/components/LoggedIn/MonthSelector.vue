@@ -45,7 +45,6 @@ export default {
   computed: {
     currentMonth: function () {
       let today = new Date();
-      //console.log(new Date(today.getFullYear(), today.getMonth(), 1));
       return new Date(today.getFullYear(), today.getMonth(), 1);
     },
 
@@ -70,10 +69,10 @@ export default {
 
   emits: ["monthChanged"],
 
-  props: ["userId", "exprReqPre"],
+  props: ["userId", "exprReqPre", "initMonth"],
 
   mounted: function () {
-    this.selectedMonth = this.currentMonth;
+    this.selectedMonth = this.initMonth;
     this.firstMonth = this.currentMonth;
     this.getFirstMonth();
     

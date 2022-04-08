@@ -3,7 +3,8 @@
   <MonthSelector
     :userId="userId"
     :exprReqPre="exprReqPre"
-    @monthChanged="changeMonth"
+    :initMonth="selectedMonth"
+    @monthChanged="(month) => $emit('monthChanged', month)"
   ></MonthSelector>
 
   <!-- small display version -->
@@ -46,26 +47,31 @@ export default {
   },
 
   methods: {
-    updateArticles: function (month) {
+    updateArticles: function () {
       axios
         .get(
           `${this.exprReqPre}${
             this.userId
-          }/${month.getFullYear()}/${month.getMonth()}`
+          }/${this.selectedMonth.getFullYear()}/${this.selectedMonth.getMonth()}`
         )
         .then((ret) => {
           this.articles = ret.data;
-          console.log(this.articles);
         });
-    },
-
-    changeMonth: function (newMonth) {
-      console.log(newMonth);
-      this.updateArticles(newMonth);
     },
   },
 
-  props: ["userId", "exprReqPre"],
+  watch: {
+    selectedMonth: function () {
+      this.updateArticles();
+    },
+  },
+
+  props: ["userId", "exprReqPre", "selectedMonth"],
+  emits: ["monthChanged"],
+
+  mounted: function () {
+    this.updateArticles();
+  },
 };
 </script>
 

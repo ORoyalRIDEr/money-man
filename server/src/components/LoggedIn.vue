@@ -4,6 +4,8 @@
     :exprReqPre="exprReqPre"
     :userId="userId"
     :categories="categories"
+    :selectedMonth="selectedMonth"
+    @monthChanged="(month) => (selectedMonth = month)"
   ></component>
 </template>
 
@@ -26,6 +28,7 @@ export default {
     return {
       categories: [],
       exprReqPre: "",
+      selectedMonth: undefined, // used to store value between change of tabs
     };
   },
 
@@ -43,12 +46,16 @@ export default {
 
   computed: {
     userName: () => this.userId,
+    currentMonth: function () {
+      let today = new Date();
+      return new Date(today.getFullYear(), today.getMonth(), 1);
+    },
   },
 
   mounted: function () {
+    this.selectedMonth = this.currentMonth;
     this.exprReqPre = `${window.location.protocol}//${window.location.hostname}:${this.expressPort}/`;
     this.getCategories();
-    console.log(this.categories);
   },
 };
 </script>
