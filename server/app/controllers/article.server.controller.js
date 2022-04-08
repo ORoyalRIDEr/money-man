@@ -43,7 +43,6 @@ module.exports.get = function (req, res, next) {
 
             var date_s = new Date(year_s, month_s, day_s);
             var date_e = new Date(year_e, month_e, day_e);
-            console.log(`${date_s} - ${date_e}`);
 
             var conditions = [
                 { user: user._id },
@@ -59,6 +58,7 @@ module.exports.get = function (req, res, next) {
                 else {
                     var output = articles.map(function (art) {
                         return {
+                            id: art._id,
                             time: art.time,
                             category: art.category,
                             price: art.price

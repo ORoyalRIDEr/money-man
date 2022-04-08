@@ -1,25 +1,20 @@
 <template>
   <h2 class="display-6">Overview</h2>
+
   <div class="row">
     <div class="col-12 col-lg col-xl-4">
-      <select
-        v-if="selectedMonth"
-        class="my-3 form-select"
-        v-model="selectedMonth"
-        @change="updatePrices"
-      >
-        <option v-for="month in availMonths" :key="month" :value="month">
-          {{
-            month.toLocaleDateString(undefined, {
-              year: "numeric",
-              month: "long",
-            })
-          }}
-        </option>
-      </select>
+      <MonthSelector
+        :userId="userId"
+        :exprReqPre="exprReqPre"
+        @monthChanged="changeMonth"
+      ></MonthSelector>
 
       <div>
-        <div class="row text-nowrap cum-price" v-for="(price, cat) in prices" :key="cat">
+        <div
+          class="row py-1 text-nowrap cum-price"
+          v-for="(price, cat) in prices"
+          :key="cat"
+        >
           <span class="col-6">{{ cat }}:</span>
           <span class="col-2">{{ Math.round(price) }} €</span>
           <span class="col-1">-></span>
@@ -35,37 +30,28 @@
 </template>
 
 <script>
+import MonthSelector from "./MonthSelector.vue";
 import axios from "axios";
 
 export default {
+  components: {
+    MonthSelector,
+  },
+
   data() {
     return {
       selectedMonth: undefined,
-      firstMonth: undefined,
       prices: {},
     };
   },
 
   methods: {
-    getFirstMonth: function () {
-      axios
-        .get(`${this.exprReqPre}${this.userId}/firstEntryDate`)
-        .then((ret) => {
-          let firstDate = new Date(ret.data);
-          this.firstMonth = new Date(
-            firstDate.getFullYear(),
-            firstDate.getMonth(),
-            1
-          );
-        });
-    },
-
-    updatePrices: function () {
+    updatePrices: function (month) {
       axios
         .get(
           `${this.exprReqPre}${
             this.userId
-          }/${this.selectedMonth.getFullYear()}/${this.selectedMonth.getMonth()}`
+          }/${month.getFullYear()}/${month.getMonth()}`
         )
         .then((ret) => {
           let articles = ret.data;
@@ -81,27 +67,14 @@ export default {
           console.log(prices);
         });
     },
+
+    changeMonth: function (newMonth) {
+      console.log(newMonth);
+      this.updatePrices(newMonth);
+    },
   },
 
   computed: {
-    availMonths: function () {
-      let availMonths = [];
-      let iterMonth = this.firstMonth;
-      let i = 0;
-
-      while (iterMonth < this.currentMonth && i < 500) {
-        i++;
-        availMonths.unshift(iterMonth);
-        iterMonth = new Date(
-          iterMonth.getFullYear(),
-          iterMonth.getMonth() + 1,
-          1
-        );
-      }
-      availMonths.unshift(iterMonth);
-      return availMonths;
-    },
-
     currentMonth: function () {
       let today = new Date();
       console.log(new Date(today.getFullYear(), today.getMonth(), 1));
@@ -118,18 +91,11 @@ export default {
   },
 
   props: ["userId", "exprReqPre", "categories"],
-
-  mounted: function () {
-    this.selectedMonth = this.currentMonth;
-    this.firstMonth = this.currentMonth;
-    this.getFirstMonth();
-    this.updatePrices();
-  },
 };
 </script>
 
 <style>
 .cum-price:nth-child(2n) {
-  background-color: rgba(0,0,0,0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 </style>

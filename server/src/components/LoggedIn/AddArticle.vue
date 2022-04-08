@@ -13,7 +13,7 @@
       </div>
 
       <div class="row">
-          <button class="btn btn-outline-secondary m-1 col" v-for="cat in categories" :key="cat">{{cat}}</button><!--@click="$emit('login', username)"-->
+          <button class="btn btn-outline-secondary m-1 col" v-for="cat in categories" :key="cat">{{cat}}</button>
       </div>
 
       <hr>

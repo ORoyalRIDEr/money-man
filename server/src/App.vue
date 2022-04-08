@@ -6,7 +6,6 @@
           <img
             class="align-self-center d-md-none btn-settings"
             :src="`${ipprot}//${ipaddr}:${expressPort}/assets/icons/distribute-vertical.svg`"
-            onload="javascript:event.target.port=8000"
             alt="#"
           />
         </div>
