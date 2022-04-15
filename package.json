@@ -20,7 +20,9 @@
     "mongoose": "^6.2.8",
     "passport": "^0.3.2",
     "vue": "^3.0.0",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "bcrypt-nodejs": "^0.0.3",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

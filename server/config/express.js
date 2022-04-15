@@ -27,6 +27,16 @@ module.exports = function () {
 
     app.use(bodyParser.json());
 
+    app.use(session({
+        secret: 'chooseGoodSecret',
+        resave: 'true',
+        saveUninitialized: 'true',
+        cookie: {maxAge: 60*60*24*365*1000}
+    }));
+
+    app.use(passport.initialize());
+    app.use(passport.session());
+
     // REST Api calls
     var userMiddleware = require('../app/routes/user.server.routes');
     userMiddleware(app);
