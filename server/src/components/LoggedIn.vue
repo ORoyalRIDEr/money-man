@@ -28,7 +28,6 @@ export default {
   data() {
     return {
       categories: [],
-      exprReqPre: "",
       selectedMonth: undefined, // used to store value between change of tabs
     };
   },
@@ -43,7 +42,7 @@ export default {
     },
   },
 
-  props: ["userId", "currentTab", "expressPort"],
+  props: ["userId", "currentTab", "exprReqPre"],
 
   computed: {
     userName: () => this.userId,
@@ -55,7 +54,6 @@ export default {
 
   mounted: function () {
     this.selectedMonth = this.currentMonth;
-    this.exprReqPre = `${window.location.protocol}//${window.location.hostname}:${this.expressPort}/`;
     this.getCategories();
   },
 

@@ -2,13 +2,19 @@
   <section id="head" class="bg-primary py-2 text-white shadow">
     <div class="container p-0">
       <div class="row px-3">
-        <div class="col-1 p-0 mx-3 my-auto" @click="showMenu = !showMenu">
+        <!-- Menu Button -->
+        <div
+          v-if="currentTab == 'loggedIn'"
+          class="col-1 p-0 mx-3 my-auto"
+          @click="showMenu = !showMenu"
+        >
           <img
             class="align-self-center d-md-none btn-settings"
             :src="`${ipprot}//${ipaddr}:${expressPort}/assets/icons/distribute-vertical.svg`"
             alt="#"
           />
         </div>
+        <!-- Headline -->
         <div class="row col">
           <h1 class="display-6 m-0 my-auto col-11 col-md-7">MoneyMan</h1>
           <div class="col-1 col-md-0"></div>
@@ -26,10 +32,12 @@
 
   <section class="row m-0">
     <nav-bar
-      class="col-0 col-md p-4 d-md-block"
+      v-if="currentTab == 'loggedIn'"
+      class="col-md p-4 d-md-flex"
       :class="showMenu ? '' : 'd-none'"
       @switchTab="switchLoggedInTab"
     ></nav-bar>
+    <div v-else class="col-md"></div>
 
     <section id="content" class="col-12 col-md-8 p-4 text-dark">
       <component
@@ -37,7 +45,7 @@
         @login="loginUser"
         :userId="userId"
         :currentTab="loggedInTab"
-        :expressPort="expressPort"
+        :exprReqPre="exprReqPre"
       >
       </component>
     </section>
@@ -61,11 +69,12 @@ export default {
   data: function () {
     return {
       expressPort: 8000,
-      currentTab: "loggedIn",
+      currentTab: "login",
       userId: 11,
-      userName: "Peter",
+      userName: "",
       showMenu: false,
       loggedInTab: "add",
+      exprReqPre: "",
     };
   },
   methods: {
@@ -81,8 +90,12 @@ export default {
   },
   computed: {
     ipaddr: () => window.location.hostname,
-    ipprot: () => window.location.protocol
-  }
+    ipprot: () => window.location.protocol,
+  },
+
+  mounted: function () {
+    this.exprReqPre = `${window.location.protocol}//${window.location.hostname}:${this.expressPort}/`;
+  },
 };
 </script>
 

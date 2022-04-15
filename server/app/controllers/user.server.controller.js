@@ -18,3 +18,18 @@ module.exports.create = function (req, res, next) {
         } catch (e) { next(e); }
     })
 }
+
+module.exports.checkUsername = function (req, res, next) {
+    if (!req.params.username) throw new exceptions.InputException('UsernameMissing');
+
+    User.findOne({ name: req.params.username }, function (err, user) {
+        try {
+            if (err) throw err;
+            if (user)
+                res.status(406).send("Username already exists.")
+            else
+                res.send()
+
+        } catch (e) { next(e); }
+    })
+}
