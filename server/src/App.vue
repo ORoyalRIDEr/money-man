@@ -33,8 +33,8 @@
   <section class="row m-0">
     <nav-bar
       v-if="currentTab == 'loggedIn'"
-      class="col-md p-4 d-md-flex"
       :class="showMenu ? '' : 'd-none'"
+      :currentTab="loggedInTab"
       @switchTab="switchLoggedInTab"
     ></nav-bar>
     <div v-else class="col-md"></div>
@@ -87,7 +87,6 @@ export default {
 
     switchLoggedInTab: function (tabName) {
       this.loggedInTab = tabName;
-      this.showMenu = false;
       console.log(tabName);
     },
 
