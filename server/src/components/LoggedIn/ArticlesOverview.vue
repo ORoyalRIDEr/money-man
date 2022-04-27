@@ -54,9 +54,9 @@ export default {
 
       axios
         .get(
-          `${this.exprReqPre}${
-            this.userId
-          }/${this.selectedMonth.getFullYear()}/${this.selectedMonth.getMonth()}`
+          `${
+            this.exprReqPre
+          }getArticles/${this.selectedMonth.getFullYear()}/${this.selectedMonth.getMonth()}`
         )
         .then((ret) => {
           let articles = ret.data;

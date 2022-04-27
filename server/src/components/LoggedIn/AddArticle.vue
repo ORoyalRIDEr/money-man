@@ -60,10 +60,10 @@ export default {
   methods: {
     storeArticle: function (category, isNew) {
       axios
-        .post(`${this.exprReqPre}${this.userId}`, {
+        .post(`${this.exprReqPre}addArticle`, {
           category: category,
           price: this.price,
-        })
+        }, { withCredentials: true })
         .then(
           () => {
             this.msg = "Article stored";

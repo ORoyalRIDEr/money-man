@@ -29,16 +29,17 @@ export default {
 
   methods: {
     getFirstMonth: function () {
-      axios
-        .get(`${this.exprReqPre}${this.userId}/firstEntryDate`)
-        .then((ret) => {
+      axios.get(`${this.exprReqPre}firstEntryDate`).then((ret) => {
+        if (ret.data != "") {
           let firstDate = new Date(ret.data);
           this.firstMonth = new Date(
             firstDate.getFullYear(),
             firstDate.getMonth(),
             1
           );
-        });
+          console.log(firstDate)
+        }
+      });
     },
   },
 
@@ -75,11 +76,10 @@ export default {
     this.selectedMonth = this.initMonth;
     this.firstMonth = this.currentMonth;
     this.getFirstMonth();
-    
+
     this.$emit("monthChanged", this.selectedMonth);
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

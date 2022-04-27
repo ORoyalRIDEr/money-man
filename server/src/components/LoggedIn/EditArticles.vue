@@ -65,19 +65,19 @@ export default {
     updateArticles: function () {
       axios
         .get(
-          `${this.exprReqPre}${
-            this.userId
-          }/${this.selectedMonth.getFullYear()}/${this.selectedMonth.getMonth()}`
+          `${
+            this.exprReqPre
+          }getArticles/${this.selectedMonth.getFullYear()}/${this.selectedMonth.getMonth()}`
         )
         .then((ret) => {
           this.articles = ret.data;
         });
     },
-    processArticleMsg: function(msg, error) {
+    processArticleMsg: function (msg, error) {
       this.msg = msg;
       this.err = error;
       this.updateArticles();
-    }
+    },
   },
 
   watch: {
@@ -95,5 +95,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

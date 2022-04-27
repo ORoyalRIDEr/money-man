@@ -35,7 +35,7 @@ export default {
   methods: {
     getCategories: function () {
       axios
-        .get(`${this.exprReqPre}${this.userId}/getCategories`)
+        .get(`${this.exprReqPre}getCategories`, { withCredentials: true })
         .then((ret) => {
           this.categories = ret.data;
         });

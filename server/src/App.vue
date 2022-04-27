@@ -20,9 +20,9 @@
           <div class="col-1 col-md-0"></div>
           <p
             class="col-11 col-md-3 m-0 align-self-center"
-            v-if="userName != ''"
+            v-if="user.name"
           >
-            <strong>Name: </strong> {{ userName }}
+            <strong>Name: </strong> {{ user.name }}
           </p>
           <div class="col-1"></div>
         </div>
@@ -58,6 +58,7 @@
 import NavBar from "./components/NavBar.vue";
 import Login from "./components/Login.vue";
 import LoggedIn from "./components/LoggedIn.vue";
+import axios from "axios";
 
 export default {
   name: "app",
@@ -68,9 +69,10 @@ export default {
   },
   data: function () {
     return {
-      expressPort: 8000,
+      expressPort: 8080,
       currentTab: "login",
       userId: 11,
+      user: {},
       userName: "",
       showMenu: false,
       loggedInTab: "add",
@@ -78,15 +80,27 @@ export default {
     };
   },
   methods: {
-    loginUser: function (inputUserName) {
-      this.userId = inputUserName;
+    loginUser: function (user) {
+      this.user = user;
       this.currentTab = "loggedIn";
     },
+
     switchLoggedInTab: function (tabName) {
       this.loggedInTab = tabName;
       this.showMenu = false;
       console.log(tabName);
     },
+
+    updateLoggedIn: function() {
+      axios
+        .get(`${this.exprReqPre}isLoggedIn`, { withCredentials: true })
+        .then((msg) => {
+          this.loginUser(msg.data)
+        })
+        .catch(() => {
+          this.currentTab = "login";
+        });
+    }
   },
   computed: {
     ipaddr: () => window.location.hostname,
@@ -95,6 +109,7 @@ export default {
 
   mounted: function () {
     this.exprReqPre = `${window.location.protocol}//${window.location.hostname}:${this.expressPort}/`;
+    this.updateLoggedIn();
   },
 };
 </script>

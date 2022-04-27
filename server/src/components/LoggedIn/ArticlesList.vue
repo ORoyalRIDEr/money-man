@@ -97,7 +97,7 @@ export default {
     },
     removeActiveArticle: function () {
       axios
-        .delete(`${this.exprReqPre}${this.userId}/${this.activeArticle.id}`)
+        .delete(`${this.exprReqPre}${this.activeArticle.id}`, { withCredentials: true })
         .then(
           () => { // success
             this.$emit('message', "Successfully removed article!", false);

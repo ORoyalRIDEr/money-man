@@ -38,13 +38,7 @@
       Register
     </button>
 
-    <button
-      type="submit"
-      class="btn btn-primary"
-      @click="$emit('login', username)"
-    >
-      Log In
-    </button>
+    <button type="submit" class="btn btn-primary" @click="login">Log In</button>
   </div>
 
   <div
@@ -171,7 +165,7 @@ export default {
 
       // Server Checks
       axios
-        .get(`${this.exprReqPre}checkUsername/${this.username}`)
+        .get(`${this.exprReqPre}checkUsername/${this.username}`, { withCredentials: true })
         .then(() => {
           this.msgs.name.err = false;
           this.msgs.name.msg = "Username valid.";
@@ -189,8 +183,25 @@ export default {
 
     register: function () {
       axios.post(`${this.exprReqPre}newUser`, {
-        name: this.username, password: this.password
-      });
+        name: this.username,
+        password: this.password,
+      }, { withCredentials: true });
+    },
+
+    login: function () {
+      axios
+        .post(`${this.exprReqPre}login`, {
+          name: this.username,
+          password: this.password,
+        }, { withCredentials: true })
+        .then((msg) => {
+          this.$emit("login", msg.data);
+        })
+        .catch(() => {
+          this.triedRegistering = true;
+          this.msgs.password.err = true;
+          this.msgs.password.msg = "Wrong username or password.";
+        });
     },
   },
 
@@ -199,5 +210,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
